@@ -15,6 +15,7 @@ Options:
   --verify-ssl=<value>         Option to enable or disable SSL certificate validation [default: False]
 
 """
+''' register daemonset  in consul'''
 from docopt import docopt
 
 import sys
