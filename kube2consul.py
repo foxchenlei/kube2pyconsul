@@ -15,7 +15,7 @@ Options:
   --verify-ssl=<value>         Option to enable or disable SSL certificate validation [default: False]
 
 """
-''' register daemonset  in consul'''
+'''把daemonset的 pod注册到consul'''
 from docopt import docopt
 
 import sys
@@ -73,7 +73,7 @@ def getip(ethname):
 
 def getservice(event, ports):
     return {"Name": event['object']['metadata']['labels']['name'], 
-            "ID": '{}'.format(event['object']['metadata']['name']),
+            "ID": '{}'.format(event['object']['metadata']['name'] + '-' + str(ports)),
             "Address": event['object']['status']['podIP'], 
             "port": ports}
             
@@ -116,7 +116,8 @@ def registration(queue):
                     for ports in portlist:
                         service = getservice(event, ports)
                         r = ''
-                        print service
+                        #print service
+                        #print service['ID']
                         while True:
                             try:
                                 r = requests.put('{base}/v1/agent/service/register'.format(base=consul_uri), 
@@ -143,8 +144,7 @@ ervice))
                         
                         while True:
                             try:
-                                r = requests.put('{base}/v1/agent/service/deregister/{name}-{port}'.format(base=consul_uri, name=service['name'], port=service['p
-ort']), 
+                                r = requests.put('{base}/v1/agent/service/deregister/{name}'.format(base=consul_uri, name=service['ID']), 
                                                  auth=consul_auth, verify=verify_ssl)
                                 break
                             except Exception as e:
