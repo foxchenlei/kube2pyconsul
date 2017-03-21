@@ -1,4 +1,5 @@
 FROM gliderlabs/alpine
+MAINTAINER FoxChan
 COPY requirements.txt /requirements.txt
 RUN apk-install python py-pip \
     && pip install -r /requirements.txt \
