@@ -169,7 +169,7 @@ ervice))
         
         
 def run():
-    q = Queue()
+    q = Queue(maxsize=10)
     pods_watch = Process(target=pods_monitor, args=(q,), name='kube2pyconsul/pods')
     consul_desk = Process(target=registration, args=(q,), name='kube2pyconsul/registration')
     
